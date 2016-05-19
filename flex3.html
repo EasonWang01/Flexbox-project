@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	body {
+  background-color: #000;
+  overflow:hidden;
+}
+canvas {
+  display:block;
+  margin: 0 auto;
+  margin: calc(50vh - 250px) auto;
+}
+
+
+	</style>
+</head>
+<body>
+	<canvas id="c"></canvas>
+</body>
+
+<script type="text/javascript">
+	
+	var c = document.getElementById("c");
+var ctx = c.getContext("2d");
+var cw = c.width = 550,
+  cx = cw / 2;
+var ch = c.height = 500,
+  cy = ch / 2;
+var frames = 0;
+var rad = (Math.PI / 180);
+var a = 200;
+var B = 40,
+  b;
+var k = 0.08;
+var offset = 2200;
+var m = {
+  x: cx,
+  y: cy,
+  a: 0
+};
+var o = {
+  x: cx,
+  y: cy,
+  a: 0
+};
+
+function Draw() {
+  requestId = window.requestAnimationFrame(Draw);
+  frames += 15;
+  easeToAnAngle(o,m,{x:cx,y:cy})
+  ctx.clearRect(0, 0, cw, ch);
+  for (var i = frames; i <= frames + 2400; i += 10) {
+     drawArc(i,0,120);
+     drawArc(i+offset,offset,320);
+  } 
+}
+
+function drawArc(i,offset,h){ 
+    r = 20 * Math.sin(rad * (i - frames - offset) / 20);
+    b = B * Math.sin(rad * (i - frames - offset) / 20);
+    u = i * rad,
+       v = k * u + o.a;
+    z = b * Math.sin(u)
+    x = cx + (a + b * Math.cos(u)) * Math.cos(v);
+    y = cy + (.7 * a + b * Math.cos(u)) * Math.sin(v) + z;
+    ctx.fillStyle = Grd(x, y, r, h) 
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, 2 * Math.PI);
+    ctx.fill();
+}
+
+function easeToAnAngle(o,m,c){
+  //m == mouse i.e the target
+  //o is the object to be moved
+  // c is the center of the trajectory
+  var dx = (m.x - c.x);
+  var dy = (m.y - c.y);
+  m.a = Math.atan2(dy, dx);  
+  if ( o.a < m.a - Math.PI ) {o.a = o.a + 2*Math.PI;}
+  if ( o.a > m.a + Math.PI ) {o.a = o.a - 2*Math.PI;}
+  o.va = (m.a - o.a)*.05;  
+  o.a += o.va;
+  o.x = cx + a*Math.cos(o.a);
+  o.y = cy + a*Math.sin(o.a);  
+}
+
+requestId = window.requestAnimationFrame(Draw);
+
+window.addEventListener("mousemove", function(evt) {
+  m = oMousePos(c, evt);
+}, false);
+
+function oMousePos(canvas, evt) {
+  var ClientRect = canvas.getBoundingClientRect();
+  return {
+    x: Math.round(evt.clientX - ClientRect.left),
+    y: Math.round(evt.clientY - ClientRect.top)
+  }
+}
+
+function Grd(x, y, r, h) {
+  grd = ctx.createRadialGradient(x - .2 * r, y - .6 * r, 0, x - .2 * r, y - .6 * r, r);
+  grd.addColorStop(0, 'hsl(' + h + ',100%,60%)');
+  grd.addColorStop(0.4, 'hsl(' + h + ',100%,40%)');
+  grd.addColorStop(1, 'hsl(' + h + ',100%,20%)');
+  return grd;
+}
+</script>
+</html>

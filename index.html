@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style> 
+.flex-container {
+    display: -webkit-flex;
+    display: flex;
+    width: 100%;
+    height: 20%;
+}
+
+.flex-item {
+    background-color: cornflowerblue;
+    width:25%;
+
+    height: 100%;
+    margin: 1%;
+    transition:all 0.3s ease;
+}
+.flex-item:hover{
+  transform: scale(1.3);
+}
+</style>
+
+
+</head>
+<body style="height:1000px">
+
+<div id="container-index">
+<div class="flex-container">
+  <div id="01"class="flex-item" ></div>
+  <div id="02"class="flex-item"></div>
+  <div id="03"class="flex-item"></div>  
+  <div id="04"class="flex-item"></div> 
+</div>
+
+<div class="flex-container" style="margin-top: 5%">
+  <div id="05"class="flex-item"></div>
+  <div id="06"class="flex-item"></div>
+  <div id="07"class="flex-item"></div>  
+  <div id="08"class="flex-item"></div> 
+</div>
+</div>
+
+
+<!--1號  -->
+<div id='container-1'>
+<div class='assembly'>
+  <div class='bar'>
+    <div class='face'></div>
+    <div class='face'></div>
+    <div class='face'></div>
+    <div class='face'></div>
+  </div>
+  <div class='bar'>
+    <div class='face'></div>
+    <div class='face'></div>
+    <div class='face'></div>
+    <div class='face'></div>
+  </div>
+  <div class='bar'>
+    <div class='face'></div>
+    <div class='face'></div>
+    <div class='face'></div>
+    <div class='face'></div>
+  </div>
+  <div class='bar'>
+    <div class='face'></div>
+    <div class='face'></div>
+    <div class='face'></div>
+    <div class='face'></div>
+  </div>
+  <div class='bar'>
+    <div class='face'></div>
+    <div class='face'></div>
+    <div class='face'></div>
+    <div class='face'></div>
+  </div>
+</div>
+</div>
+
+
+
+<style>
+body {
+  overflow: hidden;
+  margin: 0;
+  height: 100vh;
+  perspective: 65em;
+  perspective-origin: 50% calc(50% - 25em);
+  background: #000;
+}
+
+#container-1 div{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-style: preserve-3d;
+
+}
+
+.assembly {
+  transform: rotateY(50deg) translate3d(0, -10em, 5em);
+  animation: move 8s linear infinite;
+    position: absolute;
+}
+
+@keyframes move {
+  to {
+    transform: rotateY(-30deg) translate3d(0, 5em, 0);
+  }
+}
+.bar {
+  transform-origin: 0 2.5em 0;
+  animation: grow 8s cubic-bezier(0.19, 1, 0.23, 1) infinite;
+}
+.bar:nth-child(1) {
+  margin-left: -15em;
+  transform: scaleY(1);
+  color: #7ed6be;
+}
+.bar:nth-child(2) {
+  margin-left: -7.5em;
+  transform: scaleY(2);
+  color: #ecf081;
+}
+.bar:nth-child(3) {
+  margin-left: 0em;
+  transform: scaleY(2.3);
+  color: #ffbe40;
+}
+.bar:nth-child(4) {
+  margin-left: 7.5em;
+  transform: scaleY(2.5);
+  color: #ef746f;
+}
+.bar:nth-child(5) {
+  margin-left: 15em;
+  transform: scaleY(2.9);
+  color: #bc8696;
+}
+
+@keyframes grow {
+  0% {
+    transform: scaleY(0);
+  }
+}
+.face {
+  margin: -2.5em;
+  width: 5em;
+  height: 5em;
+  backface-visibility: hidden;
+  background: currentColor;
+}
+.face:nth-child(n + 2):before {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: inherit;
+  height: inherit;
+  opacity: .1;
+  background: inherit;
+  content: '';
+}
+.face:nth-child(1) {
+  transform: rotate3d(1, 0, 0, 90deg) translateZ(2.5em);
+  -webkit-filter: brightness(0.7);
+  filter: brightness(0.7);
+}
+.face:nth-child(2) {
+  transform: rotate3d(0, 1, 0, -90deg) translateZ(2.5em);
+  -webkit-filter: brightness(1);
+  filter: brightness(1);
+}
+.face:nth-child(3) {
+  transform: rotate3d(0, 1, 0, 0deg) translateZ(2.5em);
+  -webkit-filter: brightness(0.85);
+  filter: brightness(0.85);
+}
+.face:nth-child(4) {
+  transform: rotate3d(0, 1, 0, 90deg) translateZ(2.5em);
+  -webkit-filter: brightness(0.55);
+  filter: brightness(0.55);
+}
+</style>
+<!--  -->
+
+
+<!-- 2號 -->
+
+<canvas id="c">
+ https://twitter.com/Real_CSS_Tricks/status/730774601035190272
+ http://nbremer.github.io/openvis2016/slides/#/colorAdd-code</canvas>
+
+
+
+<script>
+var c = document.getElementById("c");
+var ctx = c.getContext("2d");
+var cw = c.width = window.innerWidth;
+var ch = c.height = window.innerHeight;
+var cx = cw / 2,
+  cy = ch / 2;
+var rad = Math.PI / 180;
+var requestId = null;
+var frames = 360;
+var R = cx / 2;
+
+var colors = ["#FA2E59", "#FF703F", "#FF703F", "#F7BC05", "#ECF6BB", "#76BCAD"];
+
+function Particle(x, y) {
+  this.a = Math.random() * 2 * Math.PI;
+  this.R = randomIntFromInterval(9, 15);
+  this.r0 = this.R;
+  this.speed = .25 + Math.random();
+  this.x = x;
+  this.y = y;
+  this.color = colors[~~(Math.random() * colors.length)];
+}
+
+Particle.prototype.draw = function() {
+  if (this.r > 0) {
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI);
+    ctx.fill();
+  }
+}
+
+var pathRy = [];
+var particles = [];
+
+function buildTrajectory() {
+  pathRy.length = 0;
+  for (var a = 0; a <= 360; a += 1) {
+    var o = {}
+    var t = a * rad;
+    o.x = cx + (R * Math.cos(t)) / (1 + (Math.sin(t) * Math.sin(t)));
+    o.y = cy + (R * Math.sin(t) * Math.cos(t)) / (1 + (Math.sin(t) * Math.sin(t)));
+    pathRy.push(o);
+  }
+}
+
+function particlesArray() {
+  particles.length = 0;
+  for (var i = 0; i < pathRy.length; i += 1) {
+    var particle = new Particle(pathRy[i].x, pathRy[i].y);
+    particles.push(particle);
+  }
+}
+
+buildTrajectory();
+particlesArray();
+
+function Draw() {
+  requestId = window.requestAnimationFrame(Draw);
+  frames += 1.5;
+  ctx.clearRect(0, 0, cw, ch);
+  for (var i = 0; i < particles.length; i += 1) {
+    var n = ((~~frames - i) % particles.length);
+    var p = particles[n];
+    p.R = i * p.speed;
+    p.r = p.r0 - i / 10;
+    p.x = pathRy[n].x + p.R * Math.cos(p.a);
+    p.y = pathRy[n].y + p.R * Math.sin(p.a);
+    particles[i].draw();
+  }
+  ctx.globalCompositeOperation = "lighten";
+}
+
+function Init() {
+  if (requestId) {
+    window.cancelAnimationFrame(requestId);
+    requestId = null;
+  }
+  cw = c.width = window.innerWidth;
+  ch = c.height = window.innerHeight;
+  cx = cw / 2;
+  cy = ch / 2;
+  R = cx / 2;
+  buildTrajectory();
+  particlesArray();
+  Draw();
+};
+
+window.setTimeout(function() {
+  Init();
+  window.addEventListener('resize', Init, false);
+}, 15);
+
+function randomIntFromInterval(mn, mx) {
+  return ~~(Math.random() * (mx - mn + 1) + mn);
+}
+
+
+</script>
+<!-- 3號 -->
+<div id="walk-container">
+  <div id="walk"></div>
+</div>
+  <style>
+@keyframes walkanim {
+  to { background-position: 100% 0; }
+}
+@keyframes stroll {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(500%); }
+}
+#walk-container {
+  display: inline-block;
+  position: relative;
+  width: 20%;
+  padding-bottom: 30%; 
+  vertical-align: middle; 
+  overflow: hidden; 
+  animation: stroll 30s linear infinite;
+}
+#walk {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/walk-sequence.svg);
+  background-repeat: no-repeat;
+  background-size: 800%;
+  animation: walkanim 1s infinite steps(7);
+}
+
+  </style>
+
+
+<!--  -->
+
+
+
+
+
+
+<script>
+
+ document.getElementById("container-1").style.display = "none";
+ document.getElementById("c").style.display = "none";
+document.getElementById("walk-container").style.display = "none";
+
+
+
+document.getElementById("01").addEventListener('click',function(){
+document.getElementById("container-1").style.display = "";
+  document.getElementById("container-index").style.display = "none";
+})
+
+document.getElementById("02").addEventListener('click',function(){
+document.getElementById("c").style.display = "";
+  document.getElementById("container-index").style.display = "none";
+})
+
+document.getElementById("03").addEventListener('click',function(){
+document.getElementById("walk-container").style.display = "";
+document.body.style.background ='white'
+  document.getElementById("container-index").style.display = "none";
+})
+
+document.getElementById("04").addEventListener('click',function(){
+ window.location.assign("./flex2.html")
+})
+
+document.getElementById("05").addEventListener('click',function(){
+ window.location.assign("./flex3.html")
+})
+
+document.getElementById("06").addEventListener('click',function(){
+ window.location.assign("./flex4.html")
+})
+
+document.getElementById("07").addEventListener('click',function(){
+ window.location.assign("./flex5.html")
+})
+
+document.getElementById("08").addEventListener('click',function(){
+ window.location.assign("./flex6.html")
+})
+
+var obj = document.getElementsByClassName("flex-item")
+
+//將物件的值轉為array
+var arr = Object.keys(obj).map(function (key) { return obj[key]  });
+
+function  sameHeightWidth(){
+var objWidth = document.getElementsByClassName("flex-item")[0].clientWidth
+  arr.forEach(function(e){
+  e.style.height=objWidth+"px";
+});
+}
+ sameHeightWidth();
+
+
+window.addEventListener("resize",function(){
+selectALLclass('flex-container')
+sameHeightWidth()
+  });
+
+
+function selectALLclass(a){
+  var objWidth = document.getElementsByClassName("flex-item")[0].clientWidth
+  var obj = document.getElementsByClassName(a);
+  var arr = Object.keys(obj).map(function (key) { return obj[key]  });
+  arr.forEach(function(e){
+  e.style.height=objWidth+"px";
+});
+}
+selectALLclass('flex-container')
+
+function randomColor(a){
+  var obj = document.getElementsByClassName(a);
+  var arr = Object.keys(obj).map(function (key) { return obj[key]  });
+  arr.forEach(function(e){
+  e.style.background=getRandomColor();
+});
+}
+randomColor('flex-item');
+
+setInterval(function(){
+randomColor('flex-item');
+},1000)
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+</script>
+
+</body>
+</html>
